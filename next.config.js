@@ -11,7 +11,6 @@ const nextConfig = {
   swcMinify: false,
 
   experimental: {
-    runtime: 'edge', // ✅ 全局开启 Edge Runtime
     instrumentationHook: process.env.NODE_ENV === 'production',
   },
 
