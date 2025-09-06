@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any,no-console */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { promisify } from 'util';
-import { gunzip } from 'zlib';
+import { gunzipData } from '@/lib/compression';
 
 import { getAuthInfoFromCookie } from '@/lib/auth';
 import { configSelfCheck, setCachedConfig } from '@/lib/config';
@@ -10,8 +9,6 @@ import { SimpleCrypto } from '@/lib/crypto';
 import { db } from '@/lib/db';
 
 export const runtime = 'edge';
-
-const gunzipAsync = promisify(gunzip);
 
 export async function POST(req: NextRequest) {
   try {
@@ -30,9 +27,11 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: '未登录' }, { status: 401 });
     }
 
-    // 检查用户权限（只有站长可以导入数据）
     if (authInfo.username !== process.env.USERNAME) {
-      return NextResponse.json({ error: '权限不足，只有站长可以导入数据' }, { status: 401 });
+      return NextResponse.json(
+        { error: '权限不足，只有站长可以导入数据' },
+        { status: 401 }
+      );
     }
 
     // 解析表单数据
@@ -48,36 +47,47 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: '请提供解密密码' }, { status: 400 });
     }
 
-    // 读取文件内容
+    // 读取文件内容（加密的 base64）
     const encryptedData = await file.text();
 
-    // 解密数据
+    // 解密
     let decryptedData: string;
     try {
       decryptedData = SimpleCrypto.decrypt(encryptedData, password);
-    } catch (error) {
-      return NextResponse.json({ error: '解密失败，请检查密码是否正确' }, { status: 400 });
+    } catch {
+      return NextResponse.json(
+        { error: '解密失败，请检查密码是否正确' },
+        { status: 400 }
+      );
     }
 
-    // 解压缩数据
-    const compressedBuffer = Buffer.from(decryptedData, 'base64');
-    const decompressedBuffer = await gunzipAsync(compressedBuffer);
-    const decompressedData = decompressedBuffer.toString();
+    // base64 → Uint8Array
+    const compressedBytes = Uint8Array.from(
+      atob(decryptedData),
+      c => c.charCodeAt(0)
+    );
 
-    // 解析JSON数据
+    // gunzip 解压
+    const decompressedBytes = await gunzipData(compressedBytes);
+    const decompressedData = new TextDecoder().decode(decompressedBytes);
+
+    // 解析 JSON
     let importData: any;
     try {
       importData = JSON.parse(decompressedData);
-    } catch (error) {
+    } catch {
       return NextResponse.json({ error: '备份文件格式错误' }, { status: 400 });
     }
 
-    // 验证数据格式
-    if (!importData.data || !importData.data.adminConfig || !importData.data.userData) {
+    if (
+      !importData.data ||
+      !importData.data.adminConfig ||
+      !importData.data.userData
+    ) {
       return NextResponse.json({ error: '备份文件格式无效' }, { status: 400 });
     }
 
-    // 开始导入数据 - 先清空现有数据
+    // 清空现有数据
     await db.clearAllData();
 
     // 导入管理员配置
@@ -90,33 +100,28 @@ export async function POST(req: NextRequest) {
     for (const username in userData) {
       const user = userData[username];
 
-      // 重新注册用户（包含密码）
       if (user.password) {
         await db.registerUser(username, user.password);
       }
 
-      // 导入播放记录
       if (user.playRecords) {
         for (const [key, record] of Object.entries(user.playRecords)) {
           await (db as any).storage.setPlayRecord(username, key, record);
         }
       }
 
-      // 导入收藏夹
       if (user.favorites) {
         for (const [key, favorite] of Object.entries(user.favorites)) {
           await (db as any).storage.setFavorite(username, key, favorite);
         }
       }
 
-      // 导入搜索历史
       if (user.searchHistory && Array.isArray(user.searchHistory)) {
-        for (const keyword of user.searchHistory.reverse()) { // 反转以保持顺序
+        for (const keyword of user.searchHistory.reverse()) {
           await db.addSearchHistory(username, keyword);
         }
       }
 
-      // 导入跳过片头片尾配置
       if (user.skipConfigs) {
         for (const [key, skipConfig] of Object.entries(user.skipConfigs)) {
           const [source, id] = key.split('+');
@@ -131,9 +136,11 @@ export async function POST(req: NextRequest) {
       message: '数据导入成功',
       importedUsers: Object.keys(userData).length,
       timestamp: importData.timestamp,
-      serverVersion: typeof importData.serverVersion === 'string' ? importData.serverVersion : '未知版本'
+      serverVersion:
+        typeof importData.serverVersion === 'string'
+          ? importData.serverVersion
+          : '未知版本',
     });
-
   } catch (error) {
     console.error('数据导入失败:', error);
     return NextResponse.json(
