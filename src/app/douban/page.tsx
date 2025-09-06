@@ -1,3 +1,5 @@
+export const runtime = 'edge';
+
 export const runtime = "edge";
 
 /* eslint-disable no-console,react-hooks/exhaustive-deps,@typescript-eslint/no-explicit-any */
