@@ -3,8 +3,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 import { getAuthInfoFromCookie } from '@/lib/auth';
-
 export const runtime = 'edge';
+
+
 
 export async function POST(request: NextRequest) {
   try {

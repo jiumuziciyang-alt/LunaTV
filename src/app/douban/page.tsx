@@ -1,6 +1,6 @@
+
 'use client'
 
-export const runtime = 'edge';
 
 /* eslint-disable no-console,react-hooks/exhaustive-deps,@typescript-eslint/no-explicit-any */
 
@@ -22,6 +22,8 @@ import DoubanCustomSelector from '@/components/DoubanCustomSelector';
 import DoubanSelector from '@/components/DoubanSelector';
 import PageLayout from '@/components/PageLayout';
 import VideoCard from '@/components/VideoCard';
+export const runtime = 'edge';
+
 
 function DoubanPageClient() {
   const searchParams = useSearchParams();

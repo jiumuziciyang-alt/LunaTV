@@ -3,6 +3,8 @@ import { NextResponse } from 'next/server';
 import { getCacheTime } from '@/lib/config';
 import { fetchDoubanData } from '@/lib/douban';
 import { DoubanItem, DoubanResult } from '@/lib/types';
+export const runtime = 'edge';
+
 
 interface DoubanCategoryApiResponse {
   total: number;
@@ -20,7 +22,6 @@ interface DoubanCategoryApiResponse {
   }>;
 }
 
-export const runtime = 'edge';
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);

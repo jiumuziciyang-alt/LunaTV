@@ -6,8 +6,9 @@ import { getAuthInfoFromCookie } from '@/lib/auth';
 import { getConfig } from '@/lib/config';
 import { db } from '@/lib/db';
 import { Favorite } from '@/lib/types';
-
 export const runtime = 'edge';
+
+
 
 /**
  * GET /api/favorites

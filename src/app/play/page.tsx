@@ -1,6 +1,6 @@
+
 'use client'
 
-export const runtime = 'edge';
 
 /* eslint-disable @typescript-eslint/ban-ts-comment, @typescript-eslint/no-explicit-any, react-hooks/exhaustive-deps, no-console, @next/next/no-img-element */
 
@@ -29,6 +29,8 @@ import { getVideoResolutionFromM3u8, processImageUrl } from '@/lib/utils';
 
 import EpisodeSelector from '@/components/EpisodeSelector';
 import PageLayout from '@/components/PageLayout';
+export const runtime = 'edge';
+
 
 // 扩展 HTMLVideoElement 类型以支持 hls 属性
 declare global {

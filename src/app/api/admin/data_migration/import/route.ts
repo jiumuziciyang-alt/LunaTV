@@ -7,8 +7,9 @@ import { getAuthInfoFromCookie } from '@/lib/auth';
 import { configSelfCheck, setCachedConfig } from '@/lib/config';
 import { SimpleCrypto } from '@/lib/crypto';
 import { db } from '@/lib/db';
-
 export const runtime = 'edge';
+
+
 
 export async function POST(req: NextRequest) {
   try {

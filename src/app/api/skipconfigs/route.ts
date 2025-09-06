@@ -6,8 +6,9 @@ import { getAuthInfoFromCookie } from '@/lib/auth';
 import { getConfig } from '@/lib/config';
 import { db } from '@/lib/db';
 import { SkipConfig } from '@/lib/types';
-
 export const runtime = 'edge';
+
+
 
 export async function GET(request: NextRequest) {
   try {

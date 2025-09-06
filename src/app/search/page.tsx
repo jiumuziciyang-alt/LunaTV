@@ -1,6 +1,6 @@
+
 'use client'
 
-export const runtime = 'edge';
 
 /* eslint-disable react-hooks/exhaustive-deps, @typescript-eslint/no-explicit-any,@typescript-eslint/no-non-null-assertion,no-empty */
 
@@ -21,6 +21,8 @@ import PageLayout from '@/components/PageLayout';
 import SearchResultFilter, { SearchFilterCategory } from '@/components/SearchResultFilter';
 import SearchSuggestions from '@/components/SearchSuggestions';
 import VideoCard, { VideoCardHandle } from '@/components/VideoCard';
+export const runtime = 'edge';
+
 
 function SearchPageClient() {
   // 搜索历史

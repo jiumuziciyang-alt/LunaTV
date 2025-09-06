@@ -5,8 +5,9 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getAuthInfoFromCookie } from '@/lib/auth';
 import { getConfig } from '@/lib/config';
 import { API_CONFIG } from '@/lib/config';
-
 export const runtime = 'edge';
+
+
 
 export async function GET(request: NextRequest) {
   const authInfo = getAuthInfoFromCookie(request);

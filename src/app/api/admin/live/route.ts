@@ -6,8 +6,9 @@ import { getAuthInfoFromCookie } from '@/lib/auth';
 import { getConfig } from '@/lib/config';
 import { db } from '@/lib/db';
 import { deleteCachedLiveChannels, refreshLiveChannels } from '@/lib/live';
-
 export const runtime = 'edge';
+
+
 
 export async function POST(request: NextRequest) {
   try {

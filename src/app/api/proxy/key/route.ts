@@ -3,8 +3,9 @@
 import { NextResponse } from "next/server";
 
 import { getConfig } from "@/lib/config";
-
 export const runtime = 'edge';
+
+
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);

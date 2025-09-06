@@ -1,7 +1,5 @@
 'use client'
 
-export const runtime = 'edge';
-
 /* eslint-disable @typescript-eslint/no-explicit-any, no-console, @typescript-eslint/no-non-null-assertion,react-hooks/exhaustive-deps,@typescript-eslint/no-empty-function */
 
 

@@ -5,6 +5,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getCacheTime } from '@/lib/config';
 import { fetchDoubanData } from '@/lib/douban';
 import { DoubanResult } from '@/lib/types';
+export const runtime = 'edge';
+
 
 interface DoubanRecommendApiResponse {
   total: number;
@@ -23,7 +25,6 @@ interface DoubanRecommendApiResponse {
   }>;
 }
 
-export const runtime = 'edge';
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);

@@ -1,6 +1,6 @@
+
 'use client'
 
-export const runtime = 'edge';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
@@ -14,6 +14,8 @@ import { checkForUpdates, UpdateStatus } from '@/lib/version_check';
 
 import { useSite } from '@/components/SiteProvider';
 import { ThemeToggle } from '@/components/ThemeToggle';
+export const runtime = 'edge';
+
 
 // 版本显示组件
 function VersionDisplay() {
