@@ -47,6 +47,7 @@ import { getAuthInfoFromBrowserCookie } from '@/lib/auth';
 
 import DataMigration from '@/components/DataMigration';
 import PageLayout from '@/components/PageLayout';
+export const runtime = 'edge';
 
 // 统一按钮样式系统
 const buttonStyles = {
