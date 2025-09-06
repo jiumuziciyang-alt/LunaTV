@@ -1,10 +1,9 @@
-export const runtime = 'edge';
+'use client'
 
-export const runtime = "edge";
+export const runtime = 'edge';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-'use client';
 
 import { AlertCircle, CheckCircle } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';

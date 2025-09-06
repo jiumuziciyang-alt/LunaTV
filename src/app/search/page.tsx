@@ -1,9 +1,8 @@
+'use client'
+
 export const runtime = 'edge';
 
-export const runtime = "edge";
-
 /* eslint-disable react-hooks/exhaustive-deps, @typescript-eslint/no-explicit-any,@typescript-eslint/no-non-null-assertion,no-empty */
-'use client';
 
 import { ChevronUp, Search, X } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
